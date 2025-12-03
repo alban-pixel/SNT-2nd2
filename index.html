@@ -1,26 +1,593 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <div id="customCursor"><img src="assets/cursor/Custom_cursor.png"></div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Nombre d'Or - Histoire des Mathématiques</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="assets/favicon/fav.ico">
+    <title>Le Nombre d'Or (Φ) - Histoire des Mathématiques</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #FFD700;
+            --secondary-color: #8B4513;
+            --accent-color: #DAA520;
+            --light-color: #FFF8DC;
+            --dark-color: #3E2723;
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, var(--light-color), #f5f5dc);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: min(90%, 1200px);
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Parallax */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .parallax::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            max-width: 800px;
+        }
+
+        /* Header */
+        header {
+            background: var(--dark-color);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-family: 'Times New Roman', serif;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: var(--transition);
+            font-family: 'Georgia', serif;
+        }
+
+        .nav-links a:hover {
+            background: var(--primary-color);
+            color: var(--dark-color);
+            transform: translateY(-2px);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Hero */
+        #hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(62, 39, 35, 0.85), rgba(62, 39, 35, 0.95)), url('fibonacci-background.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 1.5rem;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .phi-symbol {
+            font-size: clamp(3rem, 12vw, 5rem);
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--dark-color);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: var(--transition);
+            border: 2px solid var(--primary-color);
+            font-family: 'Georgia', serif;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 6vw, 2.5rem);
+            margin-bottom: 2.5rem;
+            color: var(--secondary-color);
+            position: relative;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Contenu */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .text-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+        }
+
+        .text-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .text-content em {
+            font-style: italic;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .image-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .image-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            height: 400px;
+        }
+
+        /* Mathématiques */
+        #antiquite {
+            background: var(--light-color);
+        }
+
+        .math-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .formula {
+            background: var(--dark-color);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula span {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        tr:hover {
+            background: var(--light-color);
+        }
+
+        /* Applications */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-img {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 1.4rem;
+        }
+
+        .card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Galerie */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            background: white;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-caption {
+            padding: 1rem;
+            background: white;
+            text-align: center;
+            font-weight: 500;
+            font-family: 'Georgia', serif;
+        }
+
+        /* Vidéo */
+        #multimedia {
+            text-align: center;
+            background: var(--light-color);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 */
+            margin: 2.5rem auto;
+            max-width: 800px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            font-size: 1.25rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-column p {
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+        }
+
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+            font-family: 'Georgia', serif;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+            font-family: 'Georgia', serif;
+        }
+
+        /* Scroll Animation */
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-animation.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--dark-color);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-links li {
+                text-align: center;
+                padding: 0.8rem 0;
+            }
+
+            /* Adapte la mise en page pour mobile */
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .parallax {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .phi-symbol {
+                font-size: 2.8rem;
+            }
+
+            .text-content p {
+                text-align: left;
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Tableau container */
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
     <header>
         <div class="container">
             <nav>
-                <div class="logo">φ</div>
+                <div class="logo">Φ</div>
                 <button class="menu-toggle" aria-label="Ouvrir le menu">☰</button>
                 <ul class="nav-links">
-                    <li><a href="#histoire">Histoire</a></li>
-                    <li><a href="#mathematiques">Mathématiques</a></li>
-                    <li><a href="#applications">Applications</a></li>
-                    <li><a href="#galerie">Galerie</a></li>
-                    <li><a href="#video">Vidéo</a></li>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#antiquite">Antiquité</a></li>
+                    <li><a href="#renaissance">Renaissance</a></li>
+                    <li><a href="#mythes">Mythes & Réalité</a></li>
+                    <li><a href="#multimedia">Multimédia</a></li>
                 </ul>
             </nav>
         </div>
@@ -28,163 +595,260 @@
 
     <!-- Hero Section -->
     <section id="hero">
-        <div class="container hero-content">
-            <span class="phi-symbol">φ</span>
-            <h1>Le Nombre d'Or</h1>
-            <p>φ ≈ 1.6180339887... - La divine proportion qui fascine mathématiciens, artistes et architectes depuis l'Antiquité</p>
-            <a href="#histoire" class="btn">Découvrir</a>
+        <div class="hero-content">
+            <span class="phi-symbol">Φ</span>
+            <h1>Le Nombre d'Or (Φ)</h1>
+            <p>De la proportion antique aux mythes contemporains : une analyse historique et critique</p>
+            <a href="#introduction" class="btn">Découvrir l'histoire</a>
         </div>
     </section>
 
-    <!-- Histoire Section avec Parallax -->
-    <div class="parallax" style="background-image: url('https://placehold.co/1920x1080/DAA520/3E2723?text=φ');">
+    <!-- Parallax Section -->
+    <div class="parallax" style="background-image: url('https://placehold.co/1920x1080/DAA520/3E2723?text=Φ');">
         <div class="parallax-content">
             <h2>Le Nombre d'Or à travers l'Histoire</h2>
-            <p>De l'Antiquité grecque à nos jours, découvrez l'évolution de cette proportion mystérieuse</p>
+            <p>De l'Antiquité grecque à nos jours, l'évolution d'une proportion mathématique en mythe culturel</p>
         </div>
     </div>
 
-    <!-- Histoire Section -->
-    <section id="histoire">
+    <!-- Introduction Section -->
+    <section id="introduction">
         <div class="container">
-            <h2 class="section-title">Histoire du Nombre d'Or</h2>
+            <h2 class="section-title">Introduction au Nombre d'Or</h2>
             <div class="content">
                 <div class="text-content">
-                    <p>Le nombre d'or, souvent désigné par la lettre grecque φ (phi), a fasciné les penseurs depuis l'Antiquité. Bien que les Babyloniens et les Égyptiens aient peut-être utilisé des proportions proches du nombre d'or dans leurs constructions, c'est avec les Grecs que cette proportion prend une dimension mathématique.</p>
+                    <p>Le concept mathématique connu sous le nom de Nombre d'Or (Φ) possède une histoire particulièrement riche et ambivalente, oscillant entre une définition mathématique rigoureuse et une aura de perfection mystique. Souvent idéalisé comme une loi universelle de l'harmonie et de l'esthétique, il est essentiel d'examiner ce concept avec une précision historique, en distinguant clairement sa découverte technique dans l'Antiquité grecque de son essor dogmatique à la Renaissance et, surtout, de son idéologisation au cours des deux derniers siècles.</p>
                     
-                    <p>Euclide, dans ses <em>Éléments</em> (vers 300 av. J.-C.), donne la première définition mathématique du nombre d'or, qu'il appelle "extrême et moyenne raison". Il définit une ligne divisée en deux parties telles que le rapport entre la plus grande partie et la plus petite est égal au rapport entre la ligne entière et la plus grande partie.</p>
+                    <p>Le Nombre d'Or, traditionnellement représenté par la lettre grecque Phi (Φ), possède une valeur numérique approximative de 1,6180339887... Mathématiquement, Φ est défini comme la solution positive de l'équation du second degré Φ² - Φ - 1 = 0, qui découle d'un problème de proportion géométrique.</p>
                     
-                    <p>Plus tard, au XVe siècle, le moine franciscain Luca Pacioli publie <em>De divina proportione</em> (La divine proportion), illustré par Léonard de Vinci, qui popularise le terme "nombre d'or" et explore ses applications en art et en architecture.</p>
-                    
-                    <p>Les pythagoriciens, qui vénéraient le pentagramme, avaient déjà découvert cette proportion dans les diagonales du pentagone régulier. Pour eux, le nombre d'or représentait l'harmonie parfaite de l'univers.</p>
+                    <p>Ce rapport est obtenu lorsqu'un segment est divisé de telle sorte que le rapport entre la partie la plus grande et la plus petite est égal au rapport entre le segment entier et la partie la plus grande. Cette définition technique était au cœur de la pensée mathématique antique.</p>
                 </div>
                 <div class="image-container">
-                    <img src="assets/images/mesures_sacrees.jpg" alt="Pentagone et Nombre d'Or">
+                    <img src="https://placehold.co/1920x1080/DAA520/3E2723?text=Φ">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mathématiques Section -->
-    <section id="mathematiques">
+    <!-- Parallax Antiquité -->
+    <div class="parallax" style="background-image: url('https://placehold.co/1920x2000/DAA520/3E2723?text=av+J.C.');">
+        <div class="parallax-content">
+            <h2>L'Antiquité Grecque</h2>
+            <p>"Division en extrême et moyenne raison" - Euclide, IIIe siècle av. J.-C.</p>
+        </div>
+    </div>
+
+    <!-- Antiquité Section -->
+    <section id="antiquite">
         <div class="container">
-            <h2 class="section-title">Aspects Mathématiques</h2>
-            <div class="math-content">
-                <div class="formula">
-                    Définition mathématique : <br>
-                    φ = <span>(1 + √5) / 2 ≈ 1.6180339887...</span>
+            <h2 class="section-title">Le Nombre d'Or dans l'Antiquité Grecque</h2>
+            <div class="content">
+                <div class="text-content">
+                    <p>La première formalisation mathématique rigoureuse se trouve dans <em>Les Éléments</em> d'Euclide, vers le IIIe siècle avant J.-C. Euclide, le mathématicien le plus influent de l'Antiquité, désignait cette proportion sous le nom de "division en extrême et moyenne raison".</p>
+                    
+                    <p>La définition euclidienne (Livre VI) est purement technique et géométrique : « Une droite est dite coupée en extrême et moyenne raison lorsque la droite entière est au plus grand segment comme le plus grand segment est au plus petit ».</p>
+                    
+                    <p>Pour Euclide, la proportion était avant tout un outil essentiel de la géométrie constructive, notamment pour la construction du pentagone régulier et des solides platoniciens, et non une formule magique de la beauté.</p>
+                    
+                    <p>Bien que formalisée par Euclide, l'existence de la proportion est antérieure et associée à l'école de Pythagore (VIe siècle av. J.-C.). Le pentagramme, symbole de reconnaissance des Pythagoriciens, est géométriquement saturé de la proportion dorée. Les divisions internes du pentagramme génèrent des "triangles d'or", dont le rapport des côtés est Φ.</p>
+                    
+                    <p>Cette découverte a causé une crise philosophique majeure pour les Pythagoriciens qui croyaient que tout dans la nature pouvait être exprimé par des rapports de nombres entiers. L'irrationalité de Φ représentait une faille dans leur vision rationaliste du monde, ce qui aurait valu à la proportion l'appellation de "nombre scandaleux".</p>
                 </div>
-                
-                <div>
-                    <h3>Construction Géométrique</h3>
+                <div class="math-content">
+                    <div class="formula">
+                        Φ = <span>(1 + √5) / 2 ≈ 1.6180339887...</span>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Période/Figure Clé</th>
+                                    <th>Terminologie Utilisée</th>
+                                    <th>Nature du Concept</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Grèce Antique (~300 av. J.-C.) / Euclide</td>
+                                    <td>Extrême et Moyenne Raison</td>
+                                    <td>Proportion géométrique essentielle (division de segment)</td>
+                                </tr>
+                                <tr>
+                                    <td>École de Pythagore (VIe siècle av. J.-C.)</td>
+                                    <td>Nombre Scandaleux</td>
+                                    <td>Découverte de l'irrationalité à travers le pentagramme</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Renaissance -->
+    <div class="parallax" style="background-image: url('https://placehold.co/1920x2000/DAA520/3E2723?text=1509');">
+        <div class="parallax-content">
+            <h2>La Renaissance</h2>
+            <p>"Divina Proportione" - Luca Pacioli, 1509</p>
+        </div>
+    </div>
+
+    <!-- Renaissance Section -->
+    <section id="renaissance">
+        <div class="container">
+            <h2 class="section-title">La Renaissance : De la Géométrie à la Proportion Divine</h2>
+            <div class="content">
+                <div class="text-content">
+                    <p>La transformation du concept euclidien en doctrine esthétique est principalement due au frère Luca Pacioli. En 1509, il publie son traité <em>De Divina Proportione</em>, introduisant le terme "Divine Proportion".</p>
+                    
+                    <p>Pacioli ne se contente pas de reprendre la géométrie d'Euclide ; il exalte les propriétés de cette proportion, y voyant une incarnation de la perfection et de l'ineffable divin. Il établit notamment un parallèle entre l'irrationalité du nombre et l'impossibilité de nommer Dieu par un nombre fini.</p>
+                    
+                    <p>Il pose ainsi la fondation théorique permettant d'appliquer Φ comme un canon d'harmonie universelle dans l'architecture et les arts. L'ouvrage était souvent étudié en tandem avec <em>Les Éléments</em> d'Euclide, reconnaissant l'origine technique du concept tout en lui donnant une portée spirituelle.</p>
+                    
+                    <p>Léonard de Vinci, figure emblématique de la Renaissance, était un polymathe dont les travaux s'étendaient de la peinture à l'ingénierie, en passant par l'anatomie et l'architecture. Sa période milanaise fut cruciale, car c'est là qu'il rencontra Pacioli, qu'il considérait comme un ami proche et un maître en mathématiques.</p>
+                    
+                    <p>La contribution la plus certaine de Da Vinci à la "Divine Proportion" est son rôle d'illustrateur pour l'ouvrage de Pacioli. Il réalisa les dessins des polyèdres réguliers et semi-réguliers (les solides de Platon et d'Archimède) qui illustrent la perfection géométrique de l'ouvrage.</p>
+                    
+                    <p>Concernant ses propres travaux, <em>L'Homme de Vitruve</em> (vers 1492) est le dessin le plus souvent associé aux proportions humaines et au Nombre d'Or. Cependant, ni Vitruve ni Da Vinci n'y font de référence explicite à la "Divine Proportion" de Pacioli ou à l'irrationalité de Φ. L'association dominante de <em>L'Homme de Vitruve</em> au Nombre d'Or est une interprétation largement postérieure.</p>
+                </div>
+                <div class="image-container">
+                    <img src="unevitruve-leemage_eps8094-1300x975.jpg" alt="Homme de Vitruve" title="L'Homme de Vitruve par Léonard de Vinci, circa 1492">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Mythes -->
+    <div class="parallax" style="background-image: url('https://placehold.co/1920x1080/DAA520/3E2723?text=%CF%86');">
+        <div class="parallax-content">
+            <h2>Mythes et Réalité</h2>
+            <p>L'analyse critique des attributions historiques</p>
+        </div>
+    </div>
+
+    <!-- Mythes et Réalité Section -->
+    <section id="mythes">
+        <div class="container">
+            <h2 class="section-title">Analyse Critique et Démystification des Mythes Historiques</h2>
+            <div class="content">
+                <div class="text-content">
+                    <p>L'insistance moderne à retrouver le Nombre d'Or dans les chefs-d'œuvre du passé doit être examinée à la lumière des intentions et des techniques de construction antiques. La présence de Φ dans les structures anciennes est souvent une coïncidence numérique due au fait que de nombreux rapports simples et esthétiques (tels que 8/5 = 1,6) sont très proches de 1,618..., créant un fort biais de confirmation.</p>
+                    
+                    <h3>Le mythe du Parthénon</h3>
+                    <p>L'affirmation que le Parthénon à Athènes (construit par Ictinos et Callicratès) est basé sur le Nombre d'Or est l'un des mythes les plus tenaces. Bien que certains aient tenté de démontrer que des parties du temple respectent des proportions d'or, les recherches archéologiques modernes indiquent des intentions différentes.</p>
+                    <p>Le rapport proportionnel documenté et intentionnel qui régit l'ensemble de la façade et des éléments structurels du Parthénon est le rapport simple de 4:9. Ce rapport rationnel détermine la relation entre la largeur et la longueur du stylobate ainsi que le rapport entre la hauteur et la largeur de l'entier du temple.</p>
+                    <p>Les architectes grecs, maîtres de l'ordre Dorique, privilégiaient l'utilisation de rapports d'entiers pour l'harmonie et intégraient des raffinements optiques pour contrer les illusions d'optique. Il est donc historiquement faux d'affirmer que les architectes antiques ont conçu délibérément le Parthénon autour d'une valeur irrationnelle comme Φ.</p>
+                    
+                    <h3>La Pyramide de Khéops</h3>
+                    <p>L'application du Nombre d'Or est également souvent revendiquée pour la Grande Pyramide de Khéops en Égypte, en affirmant que le rapport entre l'apothème (l'arête inclinée) et la demi-base est ≈ Φ.</p>
+                    <p>Cependant, ce rapport numérique semble être une conséquence fortuite d'une autre règle de construction. L'historien Hérodote rapporte que des prêtres égyptiens expliquaient que les dimensions avaient été choisies de manière à ce que « Le carré construit sur la hauteur verticale égalait exactement la surface de chacune des faces triangulaires ».</p>
+                    <p>Lorsque cette condition géométrique (l'égalité des aires) est satisfaite, le rapport apothème/demi-base converge naturellement vers une valeur très proche de Φ. La connaissance et l'utilisation documentée des mathématiques égyptiennes anciennes suggèrent l'usage de fractions unitaires et de proportions rationnelles, et non l'intention de concevoir autour de l'irrationalité de Φ.</p>
+                </div>
+                <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Étape</th>
-                                <th>Description</th>
-                                <th>Résultat</th>
+                                <th>Objet/Structure</th>
+                                <th>Allégation du Nombre d'Or</th>
+                                <th>Intention Historique</th>
+                                <th>Conclusion Critique</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
-                                <td>Construire un carré ABCD</td>
-                                <td>Carré de côté 1</td>
+                                <td>Le Parthénon</td>
+                                <td>Proportions principales régies par Φ</td>
+                                <td>Le rapport dominant et intentionnel est le simple et rationnel 4:9</td>
+                                <td>L'apparition de Φ est une interprétation rétrospective. Les architectes utilisaient des rapports d'entiers simples</td>
                             </tr>
                             <tr>
-                                <td>2</td>
-                                <td>Placer le milieu M de AB</td>
-                                <td>Point M</td>
+                                <td>Pyramide de Khéops</td>
+                                <td>Le rapport apothème sur demi-base est ≈ Φ</td>
+                                <td>La construction respectait une condition d'égalité entre le carré de la hauteur et la surface de la face triangulaire</td>
+                                <td>L'approximation de Φ est une conséquence mathématique de l'intention géométrique égyptienne, non une base de conception délibérée</td>
                             </tr>
                             <tr>
-                                <td>3</td>
-                                <td>Tracer un arc de cercle de centre M passant par C</td>
-                                <td>Intersection E avec la droite AB</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Construire le rectangle AEFD</td>
-                                <td>Rectangle d'or</td>
+                                <td>L'Homme de Vitruve</td>
+                                <td>Le corps humain est basé sur la proportion Φ</td>
+                                <td>Le dessin illustre les canons de proportions de Vitruve, basés sur des rapports d'entiers simples</td>
+                                <td>L'association à la Divine Proportion est un mythe postérieur, lié à la généralisation de Pacioli et Zeising</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                
-                <div>
-                    <h3>Suite de Fibonacci</h3>
-                    <p>Le nombre d'or est étroitement lié à la suite de Fibonacci (1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...), où chaque terme est la somme des deux précédents. Le rapport entre deux termes consécutifs de cette suite tend vers φ.</p>
+            </div>
+            
+            <div class="content" style="margin-top: 3rem;">
+                <div class="text-content">
+                    <h3>Le Corbusier et le Modulor</h3>
+                    <p>Dans l'architecture du XXe siècle, l'utilisation du Nombre d'Or est la plus intentionnelle et la mieux documentée à travers le système du Modulor, développé par l'architecte Le Corbusier à partir de 1945.</p>
+                    <p>Le Modulor est un système de proportions fondé sur la stature humaine, utilisant le Nombre d'Or pour générer une séquence de mesures harmonieuses pour les dimensions architecturales. Il visait à standardiser la construction autour d'une échelle humaine universellement esthétique.</p>
+                    <p>Le Corbusier a appliqué ce système dans des projets majeurs, dont la Cité Radieuse de Marseille. Le Modulor constitue l'exemple le plus clair d'une application post-antique du Nombre d'Or comme canon de beauté architecturale, contrairement aux attributions souvent fallacieuses faites aux Grecs ou aux Égyptiens.</p>
+                    
+                    <h3>Évolution terminologique du concept</h3>
+                    <p>L'expression "Section d'Or" (Der goldene Schnitt) a été introduite par le philosophe allemand Adolf Zeising en 1854 dans son ouvrage <em>Neue Lehre von den Proportionen des menschlichen Körpers</em>. Zeising généralisa la proportion à toutes les œuvres d'art et d'architecture historiques, souvent avec des approximations et des mesures sélectives.</p>
+                    <p>L'expression française "Nombre d'Or" a été popularisée et définitivement fixée par l'ingénieur et diplomate roumain Matila Ghyka en 1931. Ce nouvel élan terminologique a coïncidé avec l'application consciente de Φ dans l'art moderne. Des artistes comme Piet Mondrian ont cherché à intégrer l'harmonie proportionnelle dans leurs compositions abstraites.</p>
+                    <p>L'étude historique du Nombre d'Or révèle un décalage fondamental entre le concept technique antique et son statut mythique moderne. Maintenir une distinction claire entre le fait mathématique et le mythe romantique est essentiel pour une compréhension rigoureuse de l'histoire des mathématiques.</p>
+                </div>
+                <div class="image-container">
+                    <img src="Modulor-Le-Corbusier-gabarit.jpg" alt="Modulor de Le Corbusier" title="Le Modulor de Le Corbusier, système proportionnel basé sur le nombre d'or">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Applications Section -->
-    <section id="applications">
-        <div class="container">
-            <h2 class="section-title">Applications du Nombre d'Or</h2>
-            <div class="cards">
-                <div class="card scroll-animation">
-                    <div class="card-img" style="background: linear-gradient(45deg, #8B4513, #DAA520);">🏛️</div>
-                    <div class="card-content">
-                        <h3>Architecture</h3>
-                        <p>Le Parthénon à Athènes, les pyramides d'Égypte, et de nombreux édifices de la Renaissance incorporent le nombre d'or dans leurs proportions pour créer une harmonie visuelle.</p>
-                    </div>
-                </div>
-                
-                <div class="card scroll-animation">
-                    <div class="card-img" style="background: linear-gradient(45deg, #DAA520, #FFD700);">🎨</div>
-                    <div class="card-content">
-                        <h3>Art</h3>
-                        <p>Léonard de Vinci, Botticelli, et d'autres maîtres de la Renaissance ont utilisé le nombre d'or pour composer leurs œuvres, comme dans <em>La Naissance de Vénus</em> ou <em>La Joconde</em>.</p>
-                    </div>
-                </div>
-                
-                <div class="card scroll-animation">
-                    <div class="card-img" style="background: linear-gradient(45deg, #FFD700, #FFF8DC);">🌿</div>
-                    <div class="card-content">
-                        <h3>Nature</h3>
-                        <p>La disposition des pétales de fleurs, la spirale des coquillages, les pommes de pin, et même la structure de l'ADN suivent souvent des proportions liées au nombre d'or.</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Parallax Multimédia -->
+    <div class="parallax" style="background-image: url('https://placehold.co/1920x1080/DAA520/3E2723?text=%CF%86');">
+        <div class="parallax-content">
+            <h2>Galerie et Ressources</h2>
+            <p>Exploration visuelle et audiovisuelle du Nombre d'Or</p>
         </div>
-    </section>
+    </div>
 
-    <!-- Galerie Section -->
-    <section id="galerie">
+    <!-- Multimédia Section -->
+    <section id="multimedia">
         <div class="container">
-            <h2 class="section-title">Galerie du Nombre d'Or</h2>
+            <h2 class="section-title">Galerie et Ressources Multimédias</h2>
+            
             <div class="gallery">
-                <div class="gallery-item scroll-animation">
-                    <img src="assets/images/parthenon.jpeg" alt="Parthénon">
-                    <div class="gallery-caption">Le Parthénon et ses proportions d'or, construit en 447 Av. J.C.</div>
+                <div class="gallery-item">
+                    <img src="image021.jpg">
+                    <div class="gallery-caption">Construction géométrique du nombre d'or dans un pentagone régulier</div>
                 </div>
                 
-                <div class="gallery-item scroll-animation">
-                    <img class = "joconde" src="assets/images/joconde.jpg" alt="La Joconde">
-                    <div class="gallery-caption">La Joconde de Léonard de Vinci, peinte entre 1505 et 1506</div>
+                <div class="gallery-item">
+                    <img src="fib.jpg" alt="Spirale d'or">
+                    <div class="gallery-caption">Spirale logarithmique dans un coquillage, illustrant la suite de Fibonacci</div>
                 </div>
                 
-                <div class="gallery-item scroll-animation">
-                    <img src="assets/images/coquillage-fibonacci.jpg" alt="Coquillage">
-                    <div class="gallery-caption">Spirale logarithmique d'un coquillage, similaire à la suite de fibonacci</div>
+                <div class="gallery-item">
+                    <img src="Rectangle_Parthenon_nombre_dor.jpg" alt="Architecture grecque">
+                    <div class="gallery-caption">Le Parthénon à Athènes - proportions basées sur le rapport 4:9, non sur Φ</div>
                 </div>
                 
-                <div class="gallery-item scroll-animation">
-                    <img src="assets/images/pomme-de-pin-fibonacci.jpg" alt="Pomme de pin">
-                    <div class="gallery-caption">Disposition des écailles selon Fibonacci</div>
+                <div class="gallery-item">
+                    <img src="webimage-2023_Original_Golden-spiral-sunflower_Bil_ResourceBody.png" alt="Suite de Fibonacci dans la nature">
+                    <div class="gallery-caption">Disposition des graines dans un tournesol selon la suite de Fibonacci</div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Video Section -->
-    <section id="video">
-        <div class="container">
-            <h2 class="section-title">Vidéo Explicative</h2>
-            <p>Découvrez cette vidéo fascinante sur le nombre d'or et ses applications dans la nature, l'art et l'architecture.</p>
+            
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/DxmFbdp7v9Q" title="Le nombre d'or - Micmaths" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/ku6bCLx9roY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="content" style="margin-top: 3rem;">
+                <div class="text-content">
+                    <h3>Conclusion</h3>
+                    <p>L'étude historique du Nombre d'Or révèle un décalage fondamental entre le concept technique antique et son statut mythique moderne. Dans l'Antiquité, Φ était un outil géométrique appelé "Extrême et Moyenne Raison" par Euclide, indispensable à la construction du pentagone.</p>
+                    <p>La Renaissance, par l'intermédiaire de Luca Pacioli, a élevé le concept au rang de "Divine Proportion," associant sa complexité à la transcendance divine. Cependant, c'est l'esthétisme universaliste du XIXe siècle (Zeising) qui a fixé le terme "Section d'Or" et généré la majorité des mythes rétrospectifs.</p>
+                    <p>L'analyse critique démontre que dans des structures comme le Parthénon, les intentions des architectes reposaient sur des rapports rationnels simples (4:9), et non sur l'irrationalité de Φ. Le véritable usage intentionnel du Nombre d'Or comme canon esthétique n'est documenté que beaucoup plus tard, par des figures modernes telles que Le Corbusier.</p>
+                    <p>Maintenir une distinction claire entre le fait mathématique et le mythe romantique est essentiel pour une compréhension rigoureuse de l'histoire des mathématiques.</p>
+                </div>
+                <div class="image-container">
+                    <img src="Modulor-Le-Corbusier-gabarit.jpg" alt="Modulor de Le Corbusier" title="Le Modulor de Le Corbusier, système proportionnel basé sur le nombre d'or">
+                </div>
             </div>
         </div>
     </section>
@@ -195,62 +859,64 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>À propos</h3>
-                    <p>Ce site explore l'histoire, les mathématiques et les applications du nombre d'or, de l'Antiquité à l'an mil.</p>
+                    <p>Ce site a été réalisé dans le cadre du projet SNT (Sciences Numériques et Technologie) sur le thème de l'histoire des mathématiques de l'Antiquité à l'an mil.</p>
                 </div>
                 
                 <div class="footer-column">
                     <h3>Liens utiles</h3>
                     <ul>
-                        <li><a href="https://fr.wikipedia.org/wiki/%C3%89l%C3%A9ments_(Euclide)" target="_blank">Éléments d'Euclide</a></li>
-                        <li><a href="https://fr.wikipedia.org/wiki/De_divina_proportione" target="_blank">De divina proportione</a></li>
-                        <li><a href="https://fr.wikipedia.org/wiki/Suite_de_Fibonacci" target="_blank">Suite de Fibonacci</a></li>
-                        <li><a href="https://fr.wikipedia.org/wiki/Architecture_de_la_Gr%C3%A8ce_antique" target="_blank">Architecture grecque</a></li>
+                        <li><a href="https://fr.wikipedia.org/wiki/Nombre_d%27or" target="_blank">Wikipédia - Nombre d'Or</a></li>
+                        <li><a href="https://www.apmep.fr/" target="_blank">APMEP - Association des Professeurs de Mathématiques</a></li>
+                        <li><a href="https://images.math.cnrs.fr/" target="_blank">Images des Mathématiques - CNRS</a></li>
+                        <li><a href="https://mathshistory.st-andrews.ac.uk/" target="_blank">Histoire des Mathématiques - University of St Andrews</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h3>Crédits et sources</h3>
                     <ul>
-                        <li>Fait par Alban Delforge</li>
-                        <li>Images et vidéos de YouTube, Wikipedia, et autres sources libres de droits</li>
-                        <li>Inspiration et informations tirées de QwenLLM, Wikipedia</li>
-                        <li>Code aidé par QwenLLM</li>
-                        <li>Projet S.N.T. - Le Nombre d'Or</li>
+                        <li>Recherche et contenu : Wikipedia, youtube, CNRS</li>
+                        <li>Vidéo : El Ji</li>
+                        <li>Design et développement : Par Alban Delforge</li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 Projet S.N.T. - Le Nombre d'Or - Histoire des Mathématiques de l'Antiquité à l'an mil</p>
+                <p>&copy; 2025 - Projet SNT - Histoire des Mathématiques de l'Antiquité à l'an mil</p>
             </div>
         </div>
     </footer>
-    <!-- script JS partiellement généré par QwenLLM -->
+
     <script>
-        // menu petit ecrsn
+        // JavaScript pour le menu responsive et les animations
         document.addEventListener('DOMContentLoaded', function() {
+            // Menu toggle pour mobile
             const menuToggle = document.querySelector('.menu-toggle');
             const navLinks = document.querySelector('.nav-links');
-
+            
             if (menuToggle) {
                 menuToggle.addEventListener('click', () => {
                     navLinks.classList.toggle('active');
                 });
             }
-
-            // Animation au scroll
-            const scrollAnimations = document.querySelectorAll('.scroll-animation');
+            
+            // Animation au scroll pour les éléments
+            const scrollElements = document.querySelectorAll('.card, .gallery-item, .scroll-animation');
+            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
                     }
                 });
-            }, { threshold: 0.3 });
-
-            scrollAnimations.forEach(el => observer.observe(el));
-
-            // Scrool quand click sur buttun
+            }, { threshold: 0.1 });
+            
+            scrollElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Smooth scroll pour les liens d'ancrage
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -260,42 +926,39 @@
                             top: target.offsetTop - 80,
                             behavior: 'smooth'
                         });
+                        
+                        // Fermer le menu mobile si ouvert
                         if (navLinks.classList.contains('active')) {
                             navLinks.classList.remove('active');
                         }
                     }
                 });
             });
-
-            // Cacher le header au scroll
-            let lastScroll = 0;
+            
+            // Cacher le header au scroll vers le bas
+            let lastScrollTop = 0;
             const header = document.querySelector('header');
-            window.addEventListener('scroll', () => {
-                const current = window.scrollY;
-                if (current > 100 && current > lastScroll) {
+            const customCursor = document.getElementById('customCursor');
+            
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
                     header.style.transform = 'translateY(-100%)';
                 } else {
                     header.style.transform = 'translateY(0)';
                 }
-                lastScroll = current;
+                
+                lastScrollTop = scrollTop;
             });
+            
+            // Initialiser les animations au chargement
+            setTimeout(() => {
+                document.querySelectorAll('.card, .gallery-item').forEach(element => {
+                    element.classList.add('visible');
+                });
+            }, 300);
         });
-
-        //curseur marteau stylé
-            const cursor = document.getElementById('customCursor');
-
-            document.addEventListener('mousemove', (e) => {
-              cursor.style.left = e.clientX + 'px';
-              cursor.style.top = e.clientY + 'px';
-            });
-         
-            document.addEventListener('mousedown', () => {
-              cursor.style.transform = 'rotate(-25deg)';
-            });
-
-            document.addEventListener('mouseup', () => {
-              cursor.style.transform = 'rotate(0deg)';
-            });
     </script>
 </body>
 </html>
